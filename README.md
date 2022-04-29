@@ -96,6 +96,11 @@ QueryBuilder::table('table_name')->select()->where(['id', '=', 1])->or(['name', 
 QueryBuilder::table('table_name')->select(['name'])->where(['name', '=', 'foo'])->limit(1)->run();
 ```
 
+##### QUERY
+```php
+QueryBuilder::query("SELECT * FROM table_name")->run();     //  set your custom query
+```
+
 ## Contributing
 Send your pull requests for contributing.
 
