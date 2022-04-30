@@ -98,7 +98,7 @@ QueryBuilder::table('table_name')->select(['name'])->where(['name', '=', 'foo'])
 
 ##### QUERY
 ```php
-QueryBuilder::query("SELECT * FROM table_name")->run();     //  set your custom query
+QueryBuilder::query("SELECT * FROM table_name")->run();     //  build your custom query
 ```
 
 ## Contributing
