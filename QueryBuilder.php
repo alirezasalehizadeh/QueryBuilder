@@ -79,18 +79,6 @@ class QueryBuilder {
     
 
     /**
-     * Database connection
-     *
-     * @param PDO $connection
-     *
-     * @return PDO
-     */
-    public static function connect($connection){
-        return $connection;
-    }
-
-
-    /**
      * Set the table name
      *
      * @param string $table
@@ -315,7 +303,7 @@ class QueryBuilder {
         $connection = pdo_connection
 
         self::$query = implode(" ", [self::$query, self::$join, self::$where, self::$and, self::$or, self::$orderBy, self::$limit]);
-        $statement = self::connect($connection)->prepare(trim(self::$query));
+        $statement = $connection->prepare(trim(self::$query));
         $statement->execute();
         self::clearVariables();
         return $statement->fetchAll(\PDO::FETCH_ASSOC);
