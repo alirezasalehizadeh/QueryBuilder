@@ -2,6 +2,12 @@
 
 QueryBuilder is a Simple and quick PHP query builder for interaction with database tables using PDO.
 
+##  Requirements
+
+PHP >= 8
+
+Composer >= 2
+
 ## Getting Started
 
 Before any action, include your database connection into prepare() method.
