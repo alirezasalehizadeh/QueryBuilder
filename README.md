@@ -10,13 +10,14 @@ Composer >= 2
 
 ## Getting Started
 
-Before any action, include your database connection into prepare() method.
+Before any action, pass your database connection to $connection variable in run() method.
 
 ```php
-public static function prepare(string $query): PDOStatement|false
+public static function run(): array|false
     {
-        return database_connection->prepare($query);
-    }
+        $connection = pdo_connection
+        ...
+     }
 ```
 
 Now, ready to go!
@@ -27,7 +28,7 @@ Now, ready to go!
 
 ```php
 QueryBuilder::table('table_name')->select()->run();  //  select all
-QueryBuilder::table('table_name')->select(['name'])->run();
+QueryBuilder::table('table_name')->select('name', 'age')->run();
 ```
 
 ##### INSERT
@@ -99,7 +100,7 @@ QueryBuilder::table('table_name')->select()->where(['id', '=', 1])->or(['name', 
 ##### LIMIT
 
 ```php
-QueryBuilder::table('table_name')->select(['name'])->where(['name', '=', 'foo'])->limit(1)->run();
+QueryBuilder::table('table_name')->select('name')->where(['name', '=', 'foo'])->limit(1)->run();
 ```
 
 ##### QUERY
