@@ -1,12 +1,11 @@
 <?php
-namespace App\QueryBuilder;
+//  namespace App\QueryBuilder;
 
-use App\DB;
-use PDOStatement;
+//  use App\DB;
 
 class QueryBuilder {
 
-    
+
     /**
      * Table name
      *
@@ -77,7 +76,19 @@ class QueryBuilder {
      * @var string
      */
     private static string $where = '';
-   
+    
+
+    /**
+     * Database connection
+     *
+     * @param PDO $connection
+     *
+     * @return PDO
+     */
+    public static function connect($connection){
+        return $connection;
+    }
+
 
     /**
      * Set the table name
@@ -91,8 +102,8 @@ class QueryBuilder {
         self::$table = $table;
         return new QueryBuilder;
     }
-    
-    
+
+
     /**
      * Write your custom query
      *
@@ -110,13 +121,13 @@ class QueryBuilder {
     /**
      * Build select statement
      *
-     * @param array $columns
+     * @param $columns
      * 
      * @return self
      */
-    public static function select(array $columns = ['*']): self
+    public static function select(...$columns): self
     {
-        self::$select = implode(",", $columns);
+        self::$select = implode(',', $columns);
         $query = "SELECT %s FROM `%s`";
         self::$query = sprintf($query, self::$select, self::$table);
         return new QueryBuilder;
@@ -185,21 +196,6 @@ class QueryBuilder {
         $query = "WHERE %s %s '%s'";
         self::$where = sprintf($query, $column, $operator, $value);
         return new QueryBuilder;
-    }
-
-
-    /**
-     * Prepare the query
-     * 
-     * NOTE : Replace your db connection instead of DB::connection()
-     *
-     * @param string $query
-     * 
-     * @return PDOStatement|false
-     */
-    public static function prepare(string $query): PDOStatement|false
-    {
-        return DB::connection()->prepare($query);
     }
 
 
@@ -316,8 +312,10 @@ class QueryBuilder {
      */
     public static function run(): array|false
     {
+        $connection = pdo_connection
+
         self::$query = implode(" ", [self::$query, self::$join, self::$where, self::$and, self::$or, self::$orderBy, self::$limit]);
-        $statement = self::prepare(trim(self::$query));
+        $statement = self::connect($connection)->prepare(trim(self::$query));
         $statement->execute();
         self::clearVariables();
         return $statement->fetchAll(\PDO::FETCH_ASSOC);
