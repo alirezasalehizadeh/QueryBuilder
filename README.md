@@ -2,25 +2,30 @@
 
 QueryBuilder is a Simple and quick PHP query builder for interaction with database tables using PDO.
 
+## Features
+
+- Simple, light and quick 
+- Friendly syntax
+- So useful for pure PHP projects
+
+
+
 ##  Requirements
 
 PHP >= 8
 
 Composer >= 2
 
-## Getting Started
 
-Before any action, pass your database connection to $connection variable in run() method.
+## Usage
 
-```php
-public static function run(): array|false
-    {
-        $connection = pdo_connection
-        ...
-     }
-```
+- Fill `db.php` options
+- Create `index.php` file and write your query in it
+- Run `php -S localhost:8080`
+##### Test :
+- Run `composer install`
+- In `vendor/bin` folder run `php phpunit ../../test/QueryBuilder.php`
 
-Now, ready to go!
 
 ## CRUD
 
