@@ -1,7 +1,7 @@
 <?php
 //  namespace App\QueryBuilder;
 
-//  use App\DB;
+include 'db.php';
 
 class QueryBuilder {
 
@@ -79,6 +79,19 @@ class QueryBuilder {
     
 
     /**
+     * Get query string
+     *
+     * @return string
+     */
+    public static function getQuery(): string
+    {
+        self::$query = trim(implode('', [self::$query, self::$join, self::$where, self::$and, self::$or, self::$orderBy, self::$limit]));
+        self::clearVariables();
+        return self::$query;
+    }
+    
+    
+    /**
      * Set the table name
      *
      * @param string $table
@@ -99,7 +112,7 @@ class QueryBuilder {
      * 
      * @return self
      */
-    public static function query(string $query): self
+    public static function setQuery(string $query): self
     {
         self::$query = $query;
         return new QueryBuilder;
@@ -198,7 +211,7 @@ class QueryBuilder {
      */
     public static function join(string $table, array $conditions, string $type = "INNER"): self    
     {
-        $query = " %s JOIN `%s` ON %s";
+        $query = "%s JOIN `%s` ON %s ";
         self::$join .= sprintf($query, $type, $table, implode(" ", $conditions));
         return new QueryBuilder;
     }
@@ -213,8 +226,12 @@ class QueryBuilder {
      */
     public static function and(array $condition): self    
     {
-        $query = " AND %s";
-        self::$and .= sprintf($query, implode(" ", $condition));
+        $column = $condition[0];
+        $operator = $condition[1];
+        $value = $condition[2];
+
+        $query = "AND %s %s '%s' ";
+        self::$and .= sprintf($query, $column, $operator, $value);
         return new QueryBuilder;
     }
 
@@ -228,8 +245,12 @@ class QueryBuilder {
      */
     public static function or(array $condition): self    
     {
-        $query = " OR %s";
-        self::$or .= sprintf($query, implode(" ", $condition));
+        $column = $condition[0];
+        $operator = $condition[1];
+        $value = $condition[2];
+
+        $query = "OR %s %s '%s' ";
+        self::$or .= sprintf($query, $column, $operator, $value);
         return new QueryBuilder;
     }
     
@@ -243,7 +264,7 @@ class QueryBuilder {
      */
     public static function limit(int $number): self    
     {
-        $query = " LIMIT %d";
+        $query = "LIMIT %d";
         self::$limit = sprintf($query, $number);
         return new QueryBuilder;
     }
@@ -259,7 +280,7 @@ class QueryBuilder {
      */
     public static function orderBy(array $column, string $sort = 'ASC'): self    
     {
-        $query = " ORDER BY %s %s";
+        $query = "ORDER BY %s %s";
         self::$orderBy = sprintf($query, implode(",", $column), $sort);
         return new QueryBuilder;
     }
@@ -300,12 +321,10 @@ class QueryBuilder {
      */
     public static function run(): array|false
     {
-        $connection = pdo_connection
+        $connection = DB::connection();
 
-        self::$query = implode(" ", [self::$query, self::$join, self::$where, self::$and, self::$or, self::$orderBy, self::$limit]);
-        $statement = $connection->prepare(trim(self::$query));
+        $statement = $connection->prepare(self::getQuery());
         $statement->execute();
-        self::clearVariables();
         return $statement->fetchAll(\PDO::FETCH_ASSOC);
     }
     
