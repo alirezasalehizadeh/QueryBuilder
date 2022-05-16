@@ -2,11 +2,18 @@
 
 QueryBuilder is a Simple and quick PHP query builder for interaction with database tables using PDO.
 
+## Features
+
+- Simple, light and quick 
+- Friendly syntax
+- So useful for pure PHP projects
+
+
+
 ##  Requirements
 
 PHP >= 8
 
-Composer >= 2
 
 ## Getting Started
 
@@ -27,7 +34,6 @@ Now, ready to go!
 ##### SELECT
 
 ```php
-QueryBuilder::table('table_name')->select()->run();  //  select all
 QueryBuilder::table('table_name')->select('name', 'age')->run();
 ```
 
@@ -61,13 +67,13 @@ QueryBuilder::table('table_name')->where(['id', '=', 1])->delete()->run();
 ##### JOIN
 
 ```php
-QueryBuilder::table('table_name')->join('second_table_name', ['table_name.id', '=', 'second_table_name.person_id'], 'LEFT')->select()->run();
+QueryBuilder::table('table_name')->join('second_table_name', ['table_name.id', '=', 'second_table_name.person_id'], 'LEFT')->all()->run();
 ```
 
 ##### ORDER BY
 
 ```php
-QueryBuilder::table('table_name')->select()->orderBy(['table_name.id'], 'DESC')->run();
+QueryBuilder::table('table_name')->all()->orderBy(['table_name.id'], 'DESC')->run();
 ```
 
 ##### ALL
@@ -87,13 +93,13 @@ QueryBuilder::table('table_name')->find(1)->run();
 ##### AND
 
 ```php
-QueryBuilder::table('table_name')->select()->where(['id', '=', 1])->and(['name', '=', 'foo'])->run();
+QueryBuilder::table('table_name')->all()->where(['id', '=', 1])->and(['name', '=', 'foo'])->run();
 ```
 
 ##### OR
 
 ```php
-QueryBuilder::table('table_name')->select()->where(['id', '=', 1])->or(['name', '=', 'foo'])->run();
+QueryBuilder::table('table_name')->all()->where(['id', '=', 1])->or(['name', '=', 'foo'])->run();
 ```
 
 
@@ -105,7 +111,7 @@ QueryBuilder::table('table_name')->select('name')->where(['name', '=', 'foo'])->
 
 ##### QUERY
 ```php
-QueryBuilder::query("SELECT * FROM table_name")->run();     //  build your custom query
+QueryBuilder::setQuery("SELECT * FROM table_name")->run();     //  build your custom query
 ```
 
 ## Contributing
