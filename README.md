@@ -24,7 +24,7 @@ Composer >= 2
 - Run `php -S localhost:8080`
 ##### Test :
 - Run `composer install`
-- In `vendor/bin` folder run `php phpunit ../../test/QueryBuilder.php`
+- In `vendor/bin` folder run `php phpunit ../../test/QueryBuilderTest.php`
 
 
 ## CRUD
