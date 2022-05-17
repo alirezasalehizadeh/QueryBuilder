@@ -28,6 +28,7 @@ public static function run(): array|false
 ```
 
 Now, ready to go!
+##### NOTE: You can check the `dev` branch for more information
 
 ## CRUD
 
