@@ -7,7 +7,7 @@ use function PHPUnit\Framework\assertEquals;
 use function PHPUnit\Framework\assertIsArray;
 
 class QueryBuilderTest extends TestCase{
-    
+
     /** @test */
     function select_test(){
         QueryBuilder::table('orders')->select('name', 'age');
@@ -89,6 +89,34 @@ class QueryBuilderTest extends TestCase{
     function order_by_test(){
         QueryBuilder::table('orders')->all()->orderBy(['orders.id'], 'DESC');
         assertEquals("SELECT * FROM `orders`ORDER BY orders.id DESC", QueryBuilder::getQuery());
+    }
+    
+    
+    /** @test */
+    function min_test(){
+        QueryBuilder::table('orders')->select(QueryBuilder::min('product_id', 'pr'), 'customer_id');
+        assertEquals("SELECT MIN(product_id) AS pr,customer_id FROM `orders`", QueryBuilder::getQuery());
+    }
+
+
+    /** @test */
+    function max_test(){
+        QueryBuilder::table('orders')->select(QueryBuilder::max('product_id', 'pr'), 'customer_id');
+        assertEquals("SELECT MAX(product_id) AS pr,customer_id FROM `orders`", QueryBuilder::getQuery());
+    }
+    
+    
+    /** @test */
+    function count_test(){
+        QueryBuilder::table('orders')->select(QueryBuilder::count('product_id', 'pr'), 'customer_id');
+        assertEquals("SELECT COUNT(product_id) AS pr,customer_id FROM `orders`", QueryBuilder::getQuery());
+    }
+    
+    
+    /** @test */
+    function random_test(){
+        QueryBuilder::table('orders')->random(1);
+        assertEquals("SELECT RAND(1)", QueryBuilder::getQuery());
     }
     
     
