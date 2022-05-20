@@ -115,7 +115,7 @@ class QueryBuilderTest extends TestCase{
     
     /** @test */
     function random_test(){
-        QueryBuilder::table('orders')->random(1);
+        QueryBuilder::random(1);
         assertEquals("SELECT RAND(1)", QueryBuilder::getQuery());
     }
     
