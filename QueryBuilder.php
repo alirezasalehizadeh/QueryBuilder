@@ -19,7 +19,7 @@ class QueryBuilder {
      *
      * @var string
      */
-    private static string $query;
+    private static string $query = '';
     
     
     /**
@@ -77,6 +77,30 @@ class QueryBuilder {
      */
     private static string $where = '';
     
+
+    /**
+     * Min variable
+     *
+     * @var string
+     */
+    private static string $min;
+    
+
+    /**
+     * Max variable
+     *
+     * @var string
+     */
+     private static string $max;
+
+
+    /**
+     * Count variable
+     *
+     * @var string
+     */
+     private static string $count;
+
 
     /**
      * Get query string
@@ -198,7 +222,70 @@ class QueryBuilder {
         self::$where = sprintf($query, $column, $operator, $value);
         return new QueryBuilder;
     }
+   
 
+    /**
+     * Minimum function 
+     *
+     * @param string $column
+     * @param string $AS
+     * 
+     * @return string self::$min
+     */
+    public static function min(string $column, string $AS): string
+    {
+        $query = "MIN(%s) AS %s";
+        self::$min = sprintf($query, $column, $AS);
+        return self::$min;
+    }
+    
+    
+    /**
+     * Maximum function 
+     *
+     * @param string $column
+     * @param string $AS
+     * 
+     * @return string self::$max
+     */
+    public static function max(string $column, string $AS): string
+    {
+        $query = "MAX(%s) AS %s";
+        self::$max = sprintf($query, $column, $AS);
+        return self::$max;
+    }
+    
+    
+    /**
+     * Count function 
+     *
+     * @param string $column
+     * @param string $AS
+     * 
+     * @return string self::$count
+     */
+    public static function count(string $column, string $AS): string
+    {
+        $query = "COUNT(%s) AS %s";
+        self::$count = sprintf($query, $column, $AS);
+        return self::$count;
+    }
+    
+    
+    /**
+     * Random function 
+     *
+     * @param int $count
+     * 
+     * @return self 
+     */
+    public static function random(int $count = 0): self
+    {
+        $query = "SELECT RAND(%d)"; 
+        self::$query = sprintf($query, $count);
+        return new QueryBuilder;
+    }
+    
 
     /**
      * Build join statement
@@ -209,10 +296,10 @@ class QueryBuilder {
      * 
      * @return self
      */
-    public static function join(string $table, array $conditions, string $type = "INNER"): self    
+    public static function join(string $table, array $condition, string $type = "INNER"): self    
     {
         $query = "%s JOIN `%s` ON %s ";
-        self::$join .= sprintf($query, $type, $table, implode(" ", $conditions));
+        self::$join .= sprintf($query, $type, $table, implode(" ", $condition));
         return new QueryBuilder;
     }
     
@@ -336,7 +423,7 @@ class QueryBuilder {
      */
     private static function clearVariables(): void
     {
-        self::$join = self::$where = self::$and = self::$or = self::$orderBy = self::$limit = ''; 
+        self::$join = self::$where = self::$and = self::$or = self::$orderBy = self::$limit = self::$max = self::$min = self::$count = ''; 
     }
     
 
