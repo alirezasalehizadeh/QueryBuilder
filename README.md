@@ -111,6 +111,20 @@ QueryBuilder::table('table_name')->select('name')->where(['name', '=', 'foo'])->
 ```php
 QueryBuilder::setQuery("SELECT * FROM table_name")->run();     //  build your custom query
 ```
+##### MAX, MIN, COUNT, RAND
+```php
+//  Max
+QueryBuilder::table('table_name')->select(QueryBuilder::max('user_id', 'id'), 'name')->run();
+
+//  Min
+QueryBuilder::table('table_name')->select(QueryBuilder::min('user_id', 'id'), 'name')->run();
+
+//  Count
+QueryBuilder::table('table_name')->select(QueryBuilder::count('user_id', 'id'), 'name')->run();
+
+//  Random
+QueryBuilder::random(1)->run();
+```
 
 ## Contributing
 Send your pull requests for contributing.
