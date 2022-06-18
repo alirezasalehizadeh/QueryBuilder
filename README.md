@@ -76,6 +76,11 @@ QueryBuilder::table('table_name')->join('second_table_name', ['table_name.id', '
 ```php
 QueryBuilder::table('table_name')->all()->orderBy(['table_name.id'], 'DESC')->run();
 ```
+##### GROUP BY
+
+```php
+QueryBuilder::table('table_name')->all()->groupBy('table_name.id')->run();
+```
 
 ##### ALL
 
