@@ -3,7 +3,8 @@
 
 include 'db.php';
 
-class QueryBuilder {
+class QueryBuilder
+{
 
 
     /**
@@ -12,32 +13,32 @@ class QueryBuilder {
      * @var string
      */
     private static string $table;
-    
-    
+
+
     /**
      * Query string
      *
      * @var string
      */
     private static string $query = '';
-    
-    
+
+
     /**
      * Join string
      *
      * @var string
      */
     private static string $join = '';
-    
-    
+
+
     /**
      * AND operator
      *
      * @var string
      */
     private static string $and = '';
-    
-    
+
+
     /**
      * OR operator
      *
@@ -45,38 +46,46 @@ class QueryBuilder {
      */
     private static string $or = '';
 
-    
+
     /**
      * Select statement
      *
      * @var string
      */
     private static string $select;
-    
-    
+
+
     /**
-     * ORDER statement
+     * orderBy statement
      *
      * @var string
      */
     private static string $orderBy = '';
-    
-    
+
+
+    /**
+     * groupBy statement
+     *
+     * @var string
+     */
+    private static string $groupBy = '';
+
+
     /**
      * Limit clause
      *
      * @var string
      */
     private static string $limit = '';
-    
-    
+
+
     /**
      * Where condition
      *
      * @var string
      */
     private static string $where = '';
-    
+
 
     /**
      * Min variable
@@ -84,14 +93,14 @@ class QueryBuilder {
      * @var string
      */
     private static string $min;
-    
+
 
     /**
      * Max variable
      *
      * @var string
      */
-     private static string $max;
+    private static string $max;
 
 
     /**
@@ -99,7 +108,7 @@ class QueryBuilder {
      *
      * @var string
      */
-     private static string $count;
+    private static string $count;
 
 
     /**
@@ -109,12 +118,12 @@ class QueryBuilder {
      */
     public static function getQuery(): string
     {
-        self::$query = trim(implode('', [self::$query, self::$join, self::$where, self::$and, self::$or, self::$orderBy, self::$limit]));
+        self::$query = trim(implode('', [self::$query, self::$join, self::$where, self::$and, self::$or, self::$groupBy, self::$orderBy, self::$limit]));
         self::clearVariables();
         return self::$query;
     }
-    
-    
+
+
     /**
      * Set the table name
      *
@@ -141,8 +150,8 @@ class QueryBuilder {
         self::$query = $query;
         return new QueryBuilder;
     }
-    
-    
+
+
     /**
      * Build select statement
      *
@@ -157,7 +166,7 @@ class QueryBuilder {
         self::$query = sprintf($query, self::$select, self::$table);
         return new QueryBuilder;
     }
-    
+
 
     /**
      * Build insert statement
@@ -166,7 +175,7 @@ class QueryBuilder {
      * 
      * @return self
      */
-    public static function insert(array $columns): self 
+    public static function insert(array $columns): self
     {
         $column = array_keys($columns);
         $value = array_values($columns);
@@ -222,7 +231,7 @@ class QueryBuilder {
         self::$where = sprintf($query, $column, $operator, $value);
         return new QueryBuilder;
     }
-   
+
 
     /**
      * Minimum function 
@@ -238,8 +247,8 @@ class QueryBuilder {
         self::$min = sprintf($query, $column, $AS);
         return self::$min;
     }
-    
-    
+
+
     /**
      * Maximum function 
      *
@@ -254,8 +263,8 @@ class QueryBuilder {
         self::$max = sprintf($query, $column, $AS);
         return self::$max;
     }
-    
-    
+
+
     /**
      * Count function 
      *
@@ -270,8 +279,8 @@ class QueryBuilder {
         self::$count = sprintf($query, $column, $AS);
         return self::$count;
     }
-    
-    
+
+
     /**
      * Random function 
      *
@@ -281,11 +290,11 @@ class QueryBuilder {
      */
     public static function random(int $count = 0): self
     {
-        $query = "SELECT RAND(%d)"; 
+        $query = "SELECT RAND(%d)";
         self::$query = sprintf($query, $count);
         return new QueryBuilder;
     }
-    
+
 
     /**
      * Build join statement
@@ -296,14 +305,14 @@ class QueryBuilder {
      * 
      * @return self
      */
-    public static function join(string $table, array $condition, string $type = "INNER"): self    
+    public static function join(string $table, array $condition, string $type = "INNER"): self
     {
         $query = "%s JOIN `%s` ON %s ";
         self::$join .= sprintf($query, $type, $table, implode(" ", $condition));
         return new QueryBuilder;
     }
-    
-    
+
+
     /**
      * Build and operator
      *
@@ -311,7 +320,7 @@ class QueryBuilder {
      * 
      * @return self
      */
-    public static function and(array $condition): self    
+    public static function and(array $condition): self
     {
         $column = $condition[0];
         $operator = $condition[1];
@@ -330,7 +339,7 @@ class QueryBuilder {
      * 
      * @return self
      */
-    public static function or(array $condition): self    
+    public static function or(array $condition): self
     {
         $column = $condition[0];
         $operator = $condition[1];
@@ -340,8 +349,8 @@ class QueryBuilder {
         self::$or .= sprintf($query, $column, $operator, $value);
         return new QueryBuilder;
     }
-    
-    
+
+
     /**
      * Build limit clause
      *
@@ -349,26 +358,41 @@ class QueryBuilder {
      * 
      * @return self
      */
-    public static function limit(int $number): self    
+    public static function limit(int $number): self
     {
         $query = "LIMIT %d";
         self::$limit = sprintf($query, $number);
         return new QueryBuilder;
     }
-    
-    
+
+
     /**
-     * Build order statement
+     * Build orderBy statement
      *
      * @param array $column
      * @param string $sort
      * 
      * @return self
      */
-    public static function orderBy(array $column, string $sort = 'ASC'): self    
+    public static function orderBy(array $column, string $sort = 'ASC'): self
     {
         $query = "ORDER BY %s %s";
         self::$orderBy = sprintf($query, implode(",", $column), $sort);
+        return new QueryBuilder;
+    }
+
+
+    /**
+     * Build groupBy statement
+     *
+     * @param string $column
+     * 
+     * @return self
+     */
+    public static function groupBy(string $column): self
+    {
+        $query = "GROUP BY %s";
+        self::$groupBy = sprintf($query, $column);
         return new QueryBuilder;
     }
 
@@ -378,7 +402,7 @@ class QueryBuilder {
      *
      * @return self
      */
-    public static function all(): self    
+    public static function all(): self
     {
         $query = "SELECT * FROM `%s`";
         self::$query = sprintf($query, self::$table);
@@ -393,7 +417,7 @@ class QueryBuilder {
      * 
      * @return self
      */
-    public static function find(int $id): self    
+    public static function find(int $id): self
     {
         $query = "SELECT * FROM `%s` WHERE `id` = %d";
         self::$query = sprintf($query, self::$table, $id);
@@ -414,8 +438,8 @@ class QueryBuilder {
         $statement->execute();
         return $statement->fetchAll(\PDO::FETCH_ASSOC);
     }
-    
-    
+
+
     /**
      * Clear static variables
      *
@@ -423,13 +447,12 @@ class QueryBuilder {
      */
     private static function clearVariables(): void
     {
-        self::$join = self::$where = self::$and = self::$or = self::$orderBy = self::$limit = self::$max = self::$min = self::$count = ''; 
+        self::$join = self::$where = self::$and = self::$or = self::$orderBy = self::$groupBy = self::$limit = self::$max = self::$min = self::$count = '';
     }
-    
 
-    static function __callStatic($name, $arguments):static
+
+    static function __callStatic($name, $arguments): static
     {
         return (new static)->$name(...$arguments);
     }
-
 }

@@ -91,7 +91,14 @@ class QueryBuilderTest extends TestCase{
         assertEquals("SELECT * FROM `orders`ORDER BY orders.id DESC", QueryBuilder::getQuery());
     }
     
+
+    /** @test */
+    function group_by_test(){
+        QueryBuilder::table('orders')->all()->groupBy('orders.id');
+        assertEquals("SELECT * FROM `orders`GROUP BY orders.id", QueryBuilder::getQuery());
+    }
     
+
     /** @test */
     function min_test(){
         QueryBuilder::table('orders')->select(QueryBuilder::min('product_id', 'pr'), 'customer_id');
