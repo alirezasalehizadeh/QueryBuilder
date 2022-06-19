@@ -188,15 +188,18 @@ class QueryBuilder
     /**
      * Build update statement
      *
-     * @param string $column
-     * @param string $value
+     * @param array $updates
      * 
      * @return self
      */
-    public static function update(string $column, string $value): self
+    public static function update(array $updates): self
     {
-        $query = "UPDATE `%s` SET `%s` = '%s'";
-        self::$query = sprintf($query, self::$table, $column, $value);
+        $update = '';
+        foreach ($updates as $key => $value) {
+            $update .= "`$key` = '$value',";
+        }
+        $query = "UPDATE `%s` SET %s";
+        self::$query = sprintf($query, self::$table, trim($update, ','));
         return new QueryBuilder;
     }
 

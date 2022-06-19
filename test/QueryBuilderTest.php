@@ -31,8 +31,8 @@ class QueryBuilderTest extends TestCase{
     
     /** @test */
     function update_test(){
-        QueryBuilder::table('orders')->update('title', 'bar');
-        assertEquals("UPDATE `orders` SET `title` = 'bar'", QueryBuilder::getQuery());
+        QueryBuilder::table('orders')->update(['title' => 'bar', 'age' => '20', 'name' => 'foo']);
+        assertEquals("UPDATE `orders` SET `title` = 'bar',`age` = '20',`name` = 'foo'", QueryBuilder::getQuery());
     }
     
     
