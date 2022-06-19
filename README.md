@@ -37,25 +37,24 @@ Now, ready to go!
 ```php
 QueryBuilder::table('table_name')->select('name', 'age')->run();
 ```
-
 ##### INSERT
 
 ```php
 QueryBuilder::table('table_name')->insert(
-[
+  [
 
-  'name' => 'alex',
-  'age' => 20
+    'name' => 'alex',
+    'age' => 20
 
-])->run();
+  ])
+->run();
 ```
 
 ##### UPDATE
 
 ```php
-QueryBuilder::table('table_name')->update('age', 21)->run();
+QueryBuilder::table('table_name')->update(['name' => 'john', 'age' => 21])->run();
 ```
-
 ##### DELETE
 
 ```php
