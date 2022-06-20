@@ -108,10 +108,11 @@ QueryBuilder::table('table_name')->all()->where(['id', '=', 1])->or(['name', '='
 ```
 
 
-##### LIMIT
+##### LIMIT, OFFSET
 
 ```php
 QueryBuilder::table('table_name')->select('name')->where(['name', '=', 'foo'])->limit(1)->run();
+QueryBuilder::table('table_name')->select('name')->where(['name', '=', 'foo'])->limit(1, 3)->run(); // Limit with offset
 ```
 
 ##### QUERY
