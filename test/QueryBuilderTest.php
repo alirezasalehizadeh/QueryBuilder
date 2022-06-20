@@ -82,6 +82,10 @@ class QueryBuilderTest extends TestCase{
     function limit_test(){
         QueryBuilder::table('orders')->select('name')->where(['name', '=', 'foo'])->limit(1);
         assertEquals("SELECT name FROM `orders`WHERE name = 'foo'LIMIT 1", QueryBuilder::getQuery());
+    
+        // With offset
+        QueryBuilder::table('orders')->select('name')->where(['name', '=', 'foo'])->limit(4, 2);
+        assertEquals("SELECT name FROM `orders`WHERE name = 'foo'LIMIT 4 OFFSET 2", QueryBuilder::getQuery());
     }
     
 

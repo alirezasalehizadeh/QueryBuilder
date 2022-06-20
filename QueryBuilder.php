@@ -357,14 +357,19 @@ class QueryBuilder
     /**
      * Build limit clause
      *
-     * @param integer $number
+     * @param integer $count
+     * @param integer $offset
      * 
      * @return self
      */
-    public static function limit(int $number): self
+    public static function limit(int $count, int $offset = null): self
     {
         $query = "LIMIT %d";
-        self::$limit = sprintf($query, $number);
+        self::$limit = sprintf($query, $count);
+        if ($offset) {
+            $query .= " OFFSET %d";
+            self::$limit = sprintf($query, $count, $offset);
+        }
         return new QueryBuilder;
     }
 
@@ -431,9 +436,9 @@ class QueryBuilder
     /**
      * Run the query
      *
-     * @return array|false
+     * @return array
      */
-    public static function run(): array|false
+    public static function run(): array
     {
         $connection = DB::connection();
 
