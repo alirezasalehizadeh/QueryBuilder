@@ -88,6 +88,22 @@ class QueryBuilder
 
 
     /**
+     * Between or notBetween operator
+     *
+     * @var string
+     */
+    private static string $betweenOrNot = '';
+
+
+    /**
+     * In or notIn operator
+     *
+     * @var string
+     */
+    private static string $inOrNot = '';
+
+
+    /**
      * Min variable
      *
      * @var string
@@ -118,7 +134,7 @@ class QueryBuilder
      */
     public static function getQuery(): string
     {
-        self::$query = trim(implode('', [self::$query, self::$join, self::$where, self::$and, self::$or, self::$groupBy, self::$orderBy, self::$limit]));
+        self::$query = trim(implode('', [self::$query, self::$join, self::$where, self::$and, self::$or, self::$betweenOrNot, self::$inOrNot, self::$groupBy, self::$orderBy, self::$limit]));
         self::clearVariables();
         return self::$query;
     }
@@ -393,14 +409,14 @@ class QueryBuilder
     /**
      * Build groupBy statement
      *
-     * @param string $column
+     * @param array $columns
      * 
      * @return self
      */
-    public static function groupBy(string $column): self
+    public static function groupBy(array $columns): self
     {
         $query = "GROUP BY %s";
-        self::$groupBy = sprintf($query, $column);
+        self::$groupBy = sprintf($query, implode(",", $columns));
         return new QueryBuilder;
     }
 
@@ -434,6 +450,46 @@ class QueryBuilder
 
 
     /**
+     * Build between or notBetween operator
+     *
+     * @param string $column 
+     * @param $firstValue
+     * @param $secondValue
+     * @param boolean $notBetween
+     * 
+     * @return self
+     */
+    public static function betweenOrNot(string $column, $firstValue, $secondValue, bool $notBetween = false): self
+    {
+        $query = "WHERE %s %s BETWEEN %s AND %s ";
+        self::$betweenOrNot = sprintf($query, $column, '', $firstValue, $secondValue);
+        if($notBetween){
+            self::$betweenOrNot = sprintf($query, $column, 'NOT', $firstValue, $secondValue);
+        }
+        return new QueryBuilder;
+    }
+
+
+    /**
+     * Build in or notIn operator
+     *
+     * @param string $column 
+     * @param array $values
+     * @param boolean $notIn
+     * 
+     * @return self
+     */
+    public static function inOrNot(string $column, array $value, bool $notIn = false): self
+    {
+        $query = "WHERE %s %s IN ('%s') ";
+        self::$inOrNot = sprintf($query, $column, '', implode("','", $value));
+        if($notIn){
+            self::$inOrNot = sprintf($query, $column, 'NOT', implode("','", $value));
+        }
+        return new QueryBuilder;
+    }
+
+    /**
      * Run the query
      *
      * @return array
@@ -455,7 +511,7 @@ class QueryBuilder
      */
     private static function clearVariables(): void
     {
-        self::$join = self::$where = self::$and = self::$or = self::$orderBy = self::$groupBy = self::$limit = self::$max = self::$min = self::$count = '';
+        self::$join = self::$where = self::$and = self::$or = self::$orderBy = self::$groupBy = self::$betweenOrNot = self::$inOrNot = self::$limit = self::$max = self::$min = self::$count = '';
     }
 
 
