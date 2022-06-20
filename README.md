@@ -78,7 +78,7 @@ QueryBuilder::table('table_name')->all()->orderBy(['table_name.id'], 'DESC')->ru
 ##### GROUP BY
 
 ```php
-QueryBuilder::table('table_name')->all()->groupBy('table_name.id')->run();
+QueryBuilder::table('table_name')->all()->groupBy(['table_name.id'])->run();
 ```
 
 ##### ALL
@@ -135,6 +135,18 @@ QueryBuilder::table('table_name')->select(QueryBuilder::count('user_id', 'id'), 
 QueryBuilder::random(1)->run();
 ```
 
+##### BETWEENORNOT
+```php
+QueryBuilder::table('table_name')->all()->betweenOrNot('id', 1, 3)->run();
+QueryBuilder::table('table_name')->all()->betweenOrNot('id', 1, 3, true)->run(); // True when you want NOT BETWEEN operator
+```
+
+
+##### INORNOT
+```php
+QueryBuilder::table('table_name')->all()->inOrNot('id', [1, 3])->run();
+QueryBuilder::table('table_name')->all()->inOrNot('id', [1, 3], true)->run(); // True when you want NOT IN operator
+```
 ## Contributing
 Send your pull requests for contributing.
 
