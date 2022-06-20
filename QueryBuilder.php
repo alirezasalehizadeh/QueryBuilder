@@ -199,7 +199,7 @@ class QueryBuilder
             $update .= "`$key` = '$value',";
         }
         $query = "UPDATE `%s` SET %s";
-        self::$query = sprintf($query, self::$table, trim($update, ','));
+        self::$query = sprintf($query, self::$table, rtrim($update, ','));
         return new QueryBuilder;
     }
 
