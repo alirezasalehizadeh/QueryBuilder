@@ -47,7 +47,7 @@ class QueryBuilderTest extends TestCase
     function join_test()
     {
         QueryBuilder::table('orders')->join('orders_date', ['orders.date_id', '=', 'orders_date.id'])->all();
-        assertEquals("SELECT * FROM `orders`INNER JOIN `orders_date` ON orders.date_id = orders_date.id", QueryBuilder::getQuery());
+        assertEquals("SELECT * FROM `orders`  INNER JOIN `orders_date` ON orders.date_id = orders_date.id", QueryBuilder::getQuery());
     }
 
     /** @test */
@@ -61,14 +61,14 @@ class QueryBuilderTest extends TestCase
     function and_test()
     {
         QueryBuilder::table('orders')->all()->where(['id', '=', 1])->and(['name', '=', 'foo']);
-        assertEquals("SELECT * FROM `orders`WHERE id = '1'AND name = 'foo'", QueryBuilder::getQuery());
+        assertEquals("SELECT * FROM `orders`  WHERE id = '1'  AND name = 'foo'", QueryBuilder::getQuery());
     }
 
     /** @test */
     function or_test()
     {
         QueryBuilder::table('orders')->all()->where(['id', '=', 1])->or(['name', '=', 'foo']);
-        assertEquals("SELECT * FROM `orders`WHERE id = '1'OR name = 'foo'", QueryBuilder::getQuery());
+        assertEquals("SELECT * FROM `orders`  WHERE id = '1'  OR name = 'foo'", QueryBuilder::getQuery());
     }
 
     /** @test */
@@ -82,46 +82,46 @@ class QueryBuilderTest extends TestCase
     function limit_test()
     {
         QueryBuilder::table('orders')->select('name')->where(['name', '=', 'foo'])->limit(1);
-        assertEquals("SELECT name FROM `orders`WHERE name = 'foo'LIMIT 1", QueryBuilder::getQuery());
+        assertEquals("SELECT name FROM `orders`  WHERE name = 'foo'  LIMIT 1", QueryBuilder::getQuery());
 
         // With offset
         QueryBuilder::table('orders')->select('name')->where(['name', '=', 'foo'])->limit(4, 2);
-        assertEquals("SELECT name FROM `orders`WHERE name = 'foo'LIMIT 4 OFFSET 2", QueryBuilder::getQuery());
+        assertEquals("SELECT name FROM `orders`  WHERE name = 'foo'  LIMIT 4  OFFSET 2", QueryBuilder::getQuery());
     }
 
     /** @test */
     function order_by_test()
     {
         QueryBuilder::table('orders')->all()->orderBy(['orders.id'], 'DESC');
-        assertEquals("SELECT * FROM `orders`ORDER BY orders.id DESC", QueryBuilder::getQuery());
+        assertEquals("SELECT * FROM `orders`  ORDER BY orders.id DESC", QueryBuilder::getQuery());
     }
 
     /** @test */
     function group_by_test()
     {
         QueryBuilder::table('orders')->all()->groupBy(['orders.id']);
-        assertEquals("SELECT * FROM `orders`GROUP BY orders.id", QueryBuilder::getQuery());
+        assertEquals("SELECT * FROM `orders`  GROUP BY orders.id", QueryBuilder::getQuery());
     }
 
     /** @test */
     function min_test()
     {
         QueryBuilder::table('orders')->select(QueryBuilder::min('product_id', 'pr'), 'customer_id');
-        assertEquals("SELECT MIN(product_id) AS pr,customer_id FROM `orders`", QueryBuilder::getQuery());
+        assertEquals("SELECT  MIN(product_id) AS pr ,customer_id FROM `orders`", QueryBuilder::getQuery());
     }
 
     /** @test */
     function max_test()
     {
         QueryBuilder::table('orders')->select(QueryBuilder::max('product_id', 'pr'), 'customer_id');
-        assertEquals("SELECT MAX(product_id) AS pr,customer_id FROM `orders`", QueryBuilder::getQuery());
+        assertEquals("SELECT  MAX(product_id) AS pr ,customer_id FROM `orders`", QueryBuilder::getQuery());
     }
 
     /** @test */
     function count_test()
     {
         QueryBuilder::table('orders')->select(QueryBuilder::count('product_id', 'pr'), 'customer_id');
-        assertEquals("SELECT COUNT(product_id) AS pr,customer_id FROM `orders`", QueryBuilder::getQuery());
+        assertEquals("SELECT  COUNT(product_id) AS pr ,customer_id FROM `orders`", QueryBuilder::getQuery());
     }
 
     /** @test */
@@ -132,25 +132,25 @@ class QueryBuilderTest extends TestCase
     }
 
     /** @test */
-    function betweenOrNot_test()
+    function betweenOrNotBetwween_test()
     {
-        QueryBuilder::table('orders')->all()->betweenOrNot('customer_id', 1, 3)->run();
-        assertEquals("SELECT * FROM `orders`WHERE customer_id  BETWEEN 1 AND 3", QueryBuilder::getQuery());
+        QueryBuilder::table('orders')->all()->betweenOrNotBetween('customer_id', 1, 3);
+        assertEquals("SELECT * FROM `orders`  WHERE customer_id  BETWEEN 1 AND 3", QueryBuilder::getQuery());
 
         // Notbetween
-        QueryBuilder::table('orders')->all()->betweenOrNot('customer_id', 1, 3, true)->run();
-        assertEquals("SELECT * FROM `orders`WHERE customer_id NOT BETWEEN 1 AND 3", QueryBuilder::getQuery());
+        QueryBuilder::table('orders')->all()->betweenOrNotBetween('customer_id', 1, 3, true);
+        assertEquals("SELECT * FROM `orders`  WHERE customer_id NOT BETWEEN 1 AND 3", QueryBuilder::getQuery());
     }
 
     /** @test */
     function inOrNot_test()
     {
-        QueryBuilder::table('orders')->all()->inOrNot('customer_id', [1, 3])->run();
-        assertEquals("SELECT * FROM `orders`WHERE customer_id  IN ('1','3')", QueryBuilder::getQuery());
+        QueryBuilder::table('orders')->all()->inOrNotIn('customer_id', [1, 3]);
+        assertEquals("SELECT * FROM `orders`  WHERE customer_id  IN (1,3)", QueryBuilder::getQuery());
 
         // Notin
-        QueryBuilder::table('orders')->all()->inOrNot('customer_id', [1, 3], true)->run();
-        assertEquals("SELECT * FROM `orders`WHERE customer_id NOT IN ('1','3')", QueryBuilder::getQuery());
+        QueryBuilder::table('orders')->all()->inOrNotIn('customer_id', [1, 3], true);
+        assertEquals("SELECT * FROM `orders`  WHERE customer_id NOT IN (1,3)", QueryBuilder::getQuery());
     }
 
     /** @test */

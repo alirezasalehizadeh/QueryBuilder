@@ -92,7 +92,7 @@ class QueryBuilder
      *
      * @var string
      */
-    private static string $betweenOrNot = '';
+    private static string $betweenOrNotBetween = '';
 
 
     /**
@@ -100,7 +100,7 @@ class QueryBuilder
      *
      * @var string
      */
-    private static string $inOrNot = '';
+    private static string $inOrNotIn = '';
 
 
     /**
@@ -134,7 +134,7 @@ class QueryBuilder
      */
     public static function getQuery(): string
     {
-        self::$query = trim(implode('', [self::$query, self::$join, self::$where, self::$and, self::$or, self::$betweenOrNot, self::$inOrNot, self::$groupBy, self::$orderBy, self::$limit]));
+        self::$query = trim(implode('', [self::$query, self::$join, self::$where, self::$and, self::$or, self::$betweenOrNotBetween, self::$inOrNotIn, self::$groupBy, self::$orderBy, self::$limit]));
         self::clearVariables();
         return self::$query;
     }
@@ -178,7 +178,7 @@ class QueryBuilder
     public static function select(...$columns): self
     {
         self::$select = implode(',', $columns);
-        $query = "SELECT %s FROM `%s`";
+        $query = " SELECT %s FROM `%s` ";
         self::$query = sprintf($query, self::$select, self::$table);
         return new QueryBuilder;
     }
@@ -195,7 +195,7 @@ class QueryBuilder
     {
         $column = array_keys($columns);
         $value = array_values($columns);
-        $query = "INSERT INTO `%s` (`%s`) VALUES ('%s')";
+        $query = " INSERT INTO `%s` (`%s`) VALUES ('%s') ";
         self::$query = sprintf($query, self::$table, implode("`,`", $column), implode("','", $value));
         return new QueryBuilder;
     }
@@ -214,7 +214,7 @@ class QueryBuilder
         foreach ($updates as $key => $value) {
             $update .= "`$key` = '$value',";
         }
-        $query = "UPDATE `%s` SET %s";
+        $query = " UPDATE `%s` SET %s ";
         self::$query = sprintf($query, self::$table, rtrim($update, ','));
         return new QueryBuilder;
     }
@@ -227,7 +227,7 @@ class QueryBuilder
      */
     public static function delete(): self
     {
-        $query = "DELETE FROM `%s`";
+        $query = " DELETE FROM `%s` ";
         self::$query = sprintf($query, self::$table);
         return new QueryBuilder;
     }
@@ -246,7 +246,7 @@ class QueryBuilder
         $operator = $condition[1];
         $value = $condition[2];
 
-        $query = "WHERE %s %s '%s'";
+        $query = " WHERE %s %s '%s' ";
         self::$where = sprintf($query, $column, $operator, $value);
         return new QueryBuilder;
     }
@@ -262,7 +262,7 @@ class QueryBuilder
      */
     public static function min(string $column, string $AS): string
     {
-        $query = "MIN(%s) AS %s";
+        $query = " MIN(%s) AS %s ";
         self::$min = sprintf($query, $column, $AS);
         return self::$min;
     }
@@ -278,7 +278,7 @@ class QueryBuilder
      */
     public static function max(string $column, string $AS): string
     {
-        $query = "MAX(%s) AS %s";
+        $query = " MAX(%s) AS %s ";
         self::$max = sprintf($query, $column, $AS);
         return self::$max;
     }
@@ -294,7 +294,7 @@ class QueryBuilder
      */
     public static function count(string $column, string $AS): string
     {
-        $query = "COUNT(%s) AS %s";
+        $query = " COUNT(%s) AS %s ";
         self::$count = sprintf($query, $column, $AS);
         return self::$count;
     }
@@ -309,7 +309,7 @@ class QueryBuilder
      */
     public static function random(int $count = 0): self
     {
-        $query = "SELECT RAND(%d)";
+        $query = " SELECT RAND(%d) ";
         self::$query = sprintf($query, $count);
         return new QueryBuilder;
     }
@@ -326,7 +326,7 @@ class QueryBuilder
      */
     public static function join(string $table, array $condition, string $type = "INNER"): self
     {
-        $query = "%s JOIN `%s` ON %s ";
+        $query = " %s JOIN `%s` ON %s ";
         self::$join .= sprintf($query, $type, $table, implode(" ", $condition));
         return new QueryBuilder;
     }
@@ -345,7 +345,7 @@ class QueryBuilder
         $operator = $condition[1];
         $value = $condition[2];
 
-        $query = "AND %s %s '%s' ";
+        $query = " AND %s %s '%s' ";
         self::$and .= sprintf($query, $column, $operator, $value);
         return new QueryBuilder;
     }
@@ -364,7 +364,7 @@ class QueryBuilder
         $operator = $condition[1];
         $value = $condition[2];
 
-        $query = "OR %s %s '%s' ";
+        $query = " OR %s %s '%s' ";
         self::$or .= sprintf($query, $column, $operator, $value);
         return new QueryBuilder;
     }
@@ -380,7 +380,7 @@ class QueryBuilder
      */
     public static function limit(int $count, int $offset = null): self
     {
-        $query = "LIMIT %d";
+        $query = " LIMIT %d ";
         self::$limit = sprintf($query, $count);
         if ($offset) {
             $query .= " OFFSET %d";
@@ -400,7 +400,7 @@ class QueryBuilder
      */
     public static function orderBy(array $column, string $sort = 'ASC'): self
     {
-        $query = "ORDER BY %s %s";
+        $query = " ORDER BY %s %s ";
         self::$orderBy = sprintf($query, implode(",", $column), $sort);
         return new QueryBuilder;
     }
@@ -415,7 +415,7 @@ class QueryBuilder
      */
     public static function groupBy(array $columns): self
     {
-        $query = "GROUP BY %s";
+        $query = " GROUP BY %s ";
         self::$groupBy = sprintf($query, implode(",", $columns));
         return new QueryBuilder;
     }
@@ -428,7 +428,7 @@ class QueryBuilder
      */
     public static function all(): self
     {
-        $query = "SELECT * FROM `%s`";
+        $query = " SELECT * FROM `%s` ";
         self::$query = sprintf($query, self::$table);
         return new QueryBuilder;
     }
@@ -443,7 +443,7 @@ class QueryBuilder
      */
     public static function find(int $id): self
     {
-        $query = "SELECT * FROM `%s` WHERE `id` = %d";
+        $query = " SELECT * FROM `%s` WHERE `id` = %d ";
         self::$query = sprintf($query, self::$table, $id);
         return new QueryBuilder;
     }
@@ -459,12 +459,12 @@ class QueryBuilder
      * 
      * @return self
      */
-    public static function betweenOrNot(string $column, $firstValue, $secondValue, bool $notBetween = false): self
+    public static function betweenOrNotBetween(string $column, $firstValue, $secondValue, bool $notBetween = false): self
     {
-        $query = "WHERE %s %s BETWEEN %s AND %s ";
-        self::$betweenOrNot = sprintf($query, $column, '', $firstValue, $secondValue);
+        $query = " WHERE %s %s BETWEEN %s AND %s ";
+        self::$betweenOrNotBetween = sprintf($query, $column, '', $firstValue, $secondValue);
         if($notBetween){
-            self::$betweenOrNot = sprintf($query, $column, 'NOT', $firstValue, $secondValue);
+            self::$betweenOrNotBetween = sprintf($query, $column, 'NOT', $firstValue, $secondValue);
         }
         return new QueryBuilder;
     }
@@ -479,12 +479,12 @@ class QueryBuilder
      * 
      * @return self
      */
-    public static function inOrNot(string $column, array $value, bool $notIn = false): self
+    public static function inOrNotIn(string $column, array $value, bool $notIn = false): self
     {
-        $query = "WHERE %s %s IN ('%s') ";
-        self::$inOrNot = sprintf($query, $column, '', implode("','", $value));
+        $query = " WHERE %s %s IN (%s) ";
+        self::$inOrNotIn = sprintf($query, $column, '', implode(",", $value));
         if($notIn){
-            self::$inOrNot = sprintf($query, $column, 'NOT', implode("','", $value));
+            self::$inOrNotIn = sprintf($query, $column, 'NOT', implode(",", $value));
         }
         return new QueryBuilder;
     }
@@ -511,7 +511,7 @@ class QueryBuilder
      */
     private static function clearVariables(): void
     {
-        self::$join = self::$where = self::$and = self::$or = self::$orderBy = self::$groupBy = self::$betweenOrNot = self::$inOrNot = self::$limit = self::$max = self::$min = self::$count = '';
+        self::$join = self::$where = self::$and = self::$or = self::$orderBy = self::$groupBy = self::$betweenOrNotBetween = self::$inOrNotIn = self::$limit = self::$max = self::$min = self::$count = '';
     }
 
 
