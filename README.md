@@ -135,17 +135,17 @@ QueryBuilder::random(1)->run();
 ```
 
 
-##### BETWEENORNOT
+##### BETWEEN_OR_NOTBETWEEN
 ```php
-QueryBuilder::table('table_name')->all()->betweenOrNot('id', 1, 3)->run();
-QueryBuilder::table('table_name')->all()->betweenOrNot('id', 1, 3, true)->run(); // True when you want NOT BETWEEN operator
+QueryBuilder::table('table_name')->all()->betweenOrNotBetween('id', 1, 3)->run();
+QueryBuilder::table('table_name')->all()->betweenOrNotBetween('id', 1, 3, true)->run(); // True when you want NOT BETWEEN operator
 ```
 
 
-##### INORNOT
+##### IN_OR_NOTIN
 ```php
-QueryBuilder::table('table_name')->all()->inOrNot('id', [1, 3])->run();
-QueryBuilder::table('table_name')->all()->inOrNot('id', [1, 3], true)->run(); // True when you want NOT IN operator
+QueryBuilder::table('table_name')->all()->inOrNotIn('id', [1, 3])->run();
+QueryBuilder::table('table_name')->all()->inOrNotIn('id', [1, 3], true)->run(); // True when you want NOT IN operator
 ```
 
 ## Contributing
