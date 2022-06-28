@@ -20,7 +20,7 @@ PHP >= 8
 Before any action, pass your database connection to $connection variable in run() method.
 
 ```php
-public static function run(): array|false
+public static function run(): array
     {
         $connection = pdo_connection
         ...
@@ -138,14 +138,14 @@ QueryBuilder::random(1)->run();
 ##### BETWEEN_OR_NOTBETWEEN
 ```php
 QueryBuilder::table('table_name')->all()->betweenOrNotBetween('id', 1, 3)->run();
-QueryBuilder::table('table_name')->all()->betweenOrNotBetween('id', 1, 3, true)->run(); // True when you want NOT BETWEEN operator
+QueryBuilder::table('table_name')->all()->betweenOrNotBetween('id', 1, 3, true)->run(); // True if you want NOT BETWEEN operator
 ```
 
 
 ##### IN_OR_NOTIN
 ```php
 QueryBuilder::table('table_name')->all()->inOrNotIn('id', [1, 3])->run();
-QueryBuilder::table('table_name')->all()->inOrNotIn('id', [1, 3], true)->run(); // True when you want NOT IN operator
+QueryBuilder::table('table_name')->all()->inOrNotIn('id', [1, 3], true)->run(); // True if you want NOT IN operator
 ```
 ## Contributing
 Send your pull requests for contributing.
