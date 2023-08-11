@@ -17,7 +17,7 @@ PHP >= 8
 
 ## Getting Started
 
-Before any action, pass your database connection to $connection variable in run() method.
+Just set your database connection to `$connection` variable in `run()` method.
 
 ```php
 public static function run(): array
@@ -27,7 +27,7 @@ public static function run(): array
      }
 ```
 
-Now, ready to go!
+And now, ready to go!
 ##### NOTE: You can check the `dev` branch for more information
 
 ## CRUD
@@ -120,7 +120,7 @@ QueryBuilder::table('table_name')->select('name')->where(['name', '=', 'foo'])->
 QueryBuilder::setQuery("SELECT * FROM table_name")->run();     //  build your custom query
 ```
 
-##### MAX, MIN, COUNT, RAND
+##### MAX, MIN, COUNT
 ```php
 //  Max
 QueryBuilder::table('table_name')->select(QueryBuilder::max('user_id', 'id'), 'name')->run();
@@ -131,8 +131,6 @@ QueryBuilder::table('table_name')->select(QueryBuilder::min('user_id', 'id'), 'n
 //  Count
 QueryBuilder::table('table_name')->select(QueryBuilder::count('user_id', 'id'), 'name')->run();
 
-//  Random
-QueryBuilder::random(1)->run();
 ```
 
 ##### BETWEEN_OR_NOTBETWEEN
@@ -148,7 +146,7 @@ QueryBuilder::table('table_name')->all()->inOrNotIn('id', [1, 3])->run();
 QueryBuilder::table('table_name')->all()->inOrNotIn('id', [1, 3], true)->run(); // True if you want NOT IN operator
 ```
 ## Contributing
-Send your pull requests for contributing.
+Open issue or send pull request for contributing.
 
 
 ## License
