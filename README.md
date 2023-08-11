@@ -119,7 +119,7 @@ QueryBuilder::table('table_name')->select('name')->where(['name', '=', 'foo'])->
 ```php
 QueryBuilder::setQuery("SELECT * FROM table_name")->run();     //  build your custom query
 ```
-##### MAX, MIN, COUNT, RAND
+##### MAX, MIN, COUNT
 ```php
 //  Max
 QueryBuilder::table('table_name')->select(QueryBuilder::max('user_id', 'id'), 'name')->run();
