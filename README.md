@@ -19,12 +19,12 @@ Composer >= 2
 
 ## Usage
 
-- Fill `db.php` options
+- Fill `Connection.php` options
 - Create `index.php` file and write your query in it
 - Run `php -S localhost:8080`
 ##### Test :
 - Run `composer install`
-- In `vendor/bin` folder run `php phpunit ../../test/QueryBuilderTest.php`
+- Next, run `./vendor/bin/phpunit test/QueryBuilderTest.php`
 
 
 ## CRUD
@@ -130,8 +130,6 @@ QueryBuilder::table('table_name')->select(QueryBuilder::min('user_id', 'id'), 'n
 //  Count
 QueryBuilder::table('table_name')->select(QueryBuilder::count('user_id', 'id'), 'name')->run();
 
-//  Random
-QueryBuilder::random(1)->run();
 ```
 
 
@@ -149,7 +147,7 @@ QueryBuilder::table('table_name')->all()->inOrNotIn('id', [1, 3], true)->run(); 
 ```
 
 ## Contributing
-Send your pull requests for contributing.
+Open issue or send pull request for contributing.
 
 
 ## License

@@ -1,5 +1,15 @@
 {
-    "require": {
+    "autoload": {
+        "psr-4": {
+            "QueryBuilder\\": ""
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "QueryBuilder\\Test\\": "test/"
+        }
+    },
+    "require-dev": {
         "phpunit/phpunit": "^9.5"
     }
 }
